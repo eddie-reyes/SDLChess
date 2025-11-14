@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "Board.h"
+#include <iostream>
 
 void Game::Run()
 {
@@ -17,11 +17,10 @@ void Game::Run()
 
 		while (SDL_PollEvent(&event)) {
 
-			ProcessEvent(event);
+			ProcessEvent(event, board);
 
 		}
 		
-
 	}
 
 	SDL_Quit();
@@ -29,11 +28,16 @@ void Game::Run()
 
 }
 
-void Game::ProcessEvent(SDL_Event& event) {
+void Game::ProcessEvent(SDL_Event& event, Board& board) {
 
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 
-		
+		board.OnInteractionStarted();
+	}
+
+	if (event.type == SDL_MOUSEBUTTONUP) {
+
+		board.OnInteractionEnded();
 
 	}
 

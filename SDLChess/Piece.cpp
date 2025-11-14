@@ -8,11 +8,6 @@ Piece::Piece(SDL_Renderer * renderer, Team team) {
 
 }
 
-void Piece::Draw() {
-
-
-
-}
 
 
 

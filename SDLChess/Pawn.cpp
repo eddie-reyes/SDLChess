@@ -1,6 +1,7 @@
 #include "Pawn.h"
 
 
+
 Pawn::Pawn(SDL_Renderer* renderer, Team team) : Piece(renderer, team)
 {
 
@@ -17,5 +18,5 @@ Pawn::Pawn(SDL_Renderer* renderer, Team team) : Piece(renderer, team)
 		default: break;
 	}
 
-
 }
+

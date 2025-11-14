@@ -1,9 +1,19 @@
-
+#pragma once
 #include <SDL.h>
+
+
+
 enum class Team {
 
 	WHITE_TEAM,
 	BLACK_TEAM
+
+};
+
+struct valid_move {
+
+	int x;
+	int y;
 
 };
 
@@ -13,11 +23,7 @@ public:
 
 	Piece(SDL_Renderer* renderer, Team team);
 
-	void Draw();
-
 	SDL_Texture  * getTexture() const;
-
-
 
 private:
 
