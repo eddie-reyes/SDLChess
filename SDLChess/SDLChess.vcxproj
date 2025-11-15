@@ -132,17 +132,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Pawn.h" />
     <ClCompile Include="Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>

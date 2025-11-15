@@ -31,7 +31,6 @@ bool Pawn::validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mou
 
 		if (relativePos.x == validPos.x && (relativePos.y * static_cast<int>(m_Team)) == validPos.y) { 
 
-
 			if (pieces[gridPosition.x][projectedY] != nullptr && relativePos.x == 0) break; //prevent straight-on attacks
 
 			if (pieces[projectedX][projectedY] != nullptr && pieces[projectedX][projectedY]->getTeam() == m_Team) break; //prevent self-attacks

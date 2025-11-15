@@ -10,14 +10,24 @@ Board::Board()
 	
 
 	//pawns
-
-
 	for (int i = 0; i < 8; i++) {
 
 		Pieces[i][1] = new Pawn(Renderer, Team::BLACK_TEAM, {i, 1});
 		Pieces[i][6] = new Pawn(Renderer, Team::WHITE_TEAM, {i, 6});
 
 	}
+
+	//knights
+	Pieces[1][0] = new Knight(Renderer, Team::BLACK_TEAM, { 1, 0 });
+	Pieces[6][0] = new Knight(Renderer, Team::BLACK_TEAM, { 6, 0 });
+	Pieces[1][7] = new Knight(Renderer, Team::WHITE_TEAM, { 1, 7 });
+	Pieces[6][7] = new Knight(Renderer, Team::WHITE_TEAM, { 6, 7 });
+
+	//bishops
+	Pieces[2][0] = new Bishop(Renderer, Team::BLACK_TEAM, { 2, 0 });
+	Pieces[5][0] = new Bishop(Renderer, Team::BLACK_TEAM, { 5, 0 });
+	Pieces[2][7] = new Bishop(Renderer, Team::WHITE_TEAM, { 2, 7 });
+	Pieces[5][7] = new Bishop(Renderer, Team::WHITE_TEAM, { 5, 7 });
 
 	
 };
@@ -88,9 +98,12 @@ void Board::OnInteractionStarted()
 	int projectedX = mousePos.x / Constants::TILE_SIZE;
 	int projectedY = mousePos.y / Constants::TILE_SIZE;
 
-	if (Pieces[projectedX][projectedY] != nullptr) {
+	Piece* selectedPiece = Pieces[projectedX][projectedY];
 
-		currentPiece = Pieces[projectedX][projectedY];
+
+	if (selectedPiece != nullptr) {
+
+		currentPiece = selectedPiece;
 
 	}
 
@@ -99,15 +112,14 @@ void Board::OnInteractionStarted()
 void Board::OnInteractionEnded()
 {
 
-	//std::cout << currentPiece->validMove(Pieces, mousePos);
+	if (currentPiece == nullptr || currentPiece->getTeam() == m_CurrentTurn) return;
 
+	std::cout << (currentPiece->validMove(Pieces, mousePos)) << std::endl;
 	if (currentPiece->validMove(Pieces, mousePos)) {
 
 		EvaluateMove();
 
 	}
-
-	currentPiece = nullptr;
 
 }
 
@@ -129,6 +141,8 @@ void Board::EvaluateMove()
 	Pieces[oldPos.x][oldPos.y] = nullptr;
 	
 	currentPiece->gridPosition = { projectedX, projectedY };
+
+	m_CurrentTurn = (m_CurrentTurn == Team::WHITE_TEAM ? Team::BLACK_TEAM : Team::WHITE_TEAM);
 
 
 }

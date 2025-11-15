@@ -36,13 +36,14 @@ void Game::ProcessEvent(SDL_Event& event, Board& board) {
 	else if (event.type == SDL_MOUSEBUTTONUP) {
 
 		board.OnInteractionEnded();
+		board.currentPiece = nullptr;
 
 	}
 
-	else if (event.key.keysym.sym == SDLK_q) { //quit game
+	//else if (event.key.keysym.sym == SDLK_q) { //quit game
 
-		isRunning = false;
+	//	isRunning = false;
 
-	}
+	//}
 }
 
