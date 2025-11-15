@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 void Game::Run()
 {
@@ -7,11 +6,9 @@ void Game::Run()
 	SDL_Init(SDL_INIT_VIDEO);
 	Board board;
 
-	bool isRunning = true;
+	isRunning = true;
 
 	while (isRunning) {
-
-		board.Draw();
 
 		SDL_Event event;
 
@@ -20,12 +17,13 @@ void Game::Run()
 			ProcessEvent(event, board);
 
 		}
+
+		board.Draw();
 		
 	}
 
 	SDL_Quit();
 	
-
 }
 
 void Game::ProcessEvent(SDL_Event& event, Board& board) {
@@ -35,11 +33,16 @@ void Game::ProcessEvent(SDL_Event& event, Board& board) {
 		board.OnInteractionStarted();
 	}
 
-	if (event.type == SDL_MOUSEBUTTONUP) {
+	else if (event.type == SDL_MOUSEBUTTONUP) {
 
 		board.OnInteractionEnded();
 
 	}
 
+	else if (event.key.keysym.sym == SDLK_q) { //quit game
+
+		isRunning = false;
+
+	}
 }
 

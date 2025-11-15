@@ -1,37 +1,30 @@
 #pragma once
 #include <SDL.h>
-
-
-
-enum class Team {
-
-	WHITE_TEAM,
-	BLACK_TEAM
-
-};
-
-struct valid_move {
-
-	int x;
-	int y;
-
-};
+#include <array>
+#include "types.h"
+#include "constants.h"
 
 class Piece {
 
 public:
 
-	Piece(SDL_Renderer* renderer, Team team);
+	Piece(SDL_Renderer* renderer, Team team, Position pos);
+
+	~Piece();
 
 	SDL_Texture  * getTexture() const;
 
-private:
+	Team getTeam() const;
 
+	virtual bool validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mousePos) = 0;
 
-	Team m_Team;
+	Position gridPosition;
 
 protected:
 
+	Team m_Team;
+
 	SDL_Texture* m_Texture;
+
 
 };

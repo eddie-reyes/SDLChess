@@ -1,13 +1,13 @@
 #include "Piece.h"
-#include <array>
+#include <vector>
 
 class Pawn : public Piece  {
 
 public:
-	Pawn(SDL_Renderer* renderer, Team team);
+	Pawn(SDL_Renderer* renderer, Team team, Position pos);
 
-	//bool evaluateMove(Board& pieces);
+	bool validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mousePos) override;
 
-	std::array<valid_move, 2> possibleMoves = {{ {0, 1}, {0,2} }};
+	std::vector<Position> possibleMoves = { {{1, 1}, {-1, 1}, { 0, 1 }, {0,2} } };
 
 };

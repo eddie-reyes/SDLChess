@@ -1,19 +1,21 @@
 #include "Board.h"
+#include <iostream>
 
 Board::Board()
 {
 
-	m_Window = SDL_CreateWindow("SDLChess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_windowSize, m_windowSize, SDL_WINDOW_SHOWN);
+	m_Window = SDL_CreateWindow("SDLChess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE, SDL_WINDOW_SHOWN);
 	Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
-	SQUARE_SIZE = m_windowSize / 8;
 	currentPiece = nullptr;
+	
 
 	//pawns
 
-	for (size_t i = 0; i < 8; i++) {
 
-		m_Pieces[i][1] = new Pawn(Renderer, Team::BLACK_TEAM);
-		m_Pieces[i][6] = new Pawn(Renderer, Team::WHITE_TEAM);
+	for (int i = 0; i < 8; i++) {
+
+		Pieces[i][1] = new Pawn(Renderer, Team::BLACK_TEAM, {i, 1});
+		Pieces[i][6] = new Pawn(Renderer, Team::WHITE_TEAM, {i, 6});
 
 	}
 
@@ -41,11 +43,11 @@ void Board::Draw()
 	SDL_Rect transformInfo; 
 
 	//render tiles
-	for (int i = 0; i < m_Pieces.size(); i++) {
+	for (int i = 0; i < Pieces.size(); i++) {
 
-		for (int j = 0; j < m_Pieces[i].size(); j++) {
+		for (int j = 0; j < Pieces[i].size(); j++) {
 
-			transformInfo = { i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE };
+			transformInfo = { i * Constants::TILE_SIZE, j * Constants::TILE_SIZE, Constants::TILE_SIZE, Constants::TILE_SIZE };
 
 			if ((i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)) { //overlay checkered pattern
 
@@ -53,18 +55,18 @@ void Board::Draw()
 
 			}
 
-			if (m_Pieces[i][j] != nullptr && m_Pieces[i][j] != currentPiece) { //draw static pieces
+			if (Pieces[i][j] != nullptr && Pieces[i][j] != currentPiece) { //render static pieces
 
-				SDL_RenderCopy(Renderer, m_Pieces[i][j]->getTexture(), NULL, &transformInfo);
+				SDL_RenderCopy(Renderer, Pieces[i][j]->getTexture(), NULL, &transformInfo);
 
 			}
 		}
 	}
 
-	//render current piece
+	//render interacted piece
 	if (currentPiece) {
 
-		transformInfo = { mousePos.x - (SQUARE_SIZE / 2), mousePos.y - (SQUARE_SIZE / 2), SQUARE_SIZE, SQUARE_SIZE };
+		transformInfo = { mousePos.x - (Constants::TILE_SIZE / 2), mousePos.y - (Constants::TILE_SIZE / 2), Constants::TILE_SIZE, Constants::TILE_SIZE };
 		SDL_RenderCopy(Renderer, currentPiece->getTexture(), NULL, &transformInfo);
 
 	}
@@ -83,12 +85,12 @@ void Board::updateMousePosition()
 void Board::OnInteractionStarted()
 {
 
-	int projectedX = mousePos.x / SQUARE_SIZE;
-	int projectedY = mousePos.y / SQUARE_SIZE;
+	int projectedX = mousePos.x / Constants::TILE_SIZE;
+	int projectedY = mousePos.y / Constants::TILE_SIZE;
 
-	if (m_Pieces[projectedX][projectedY] != nullptr) {
+	if (Pieces[projectedX][projectedY] != nullptr) {
 
-		currentPiece = m_Pieces[projectedX][projectedY];
+		currentPiece = Pieces[projectedX][projectedY];
 
 	}
 
@@ -97,7 +99,37 @@ void Board::OnInteractionStarted()
 void Board::OnInteractionEnded()
 {
 
+	//std::cout << currentPiece->validMove(Pieces, mousePos);
+
+	if (currentPiece->validMove(Pieces, mousePos)) {
+
+		EvaluateMove();
+
+	}
+
 	currentPiece = nullptr;
+
+}
+
+void Board::EvaluateMove()
+{
+
+	int projectedX = mousePos.x / Constants::TILE_SIZE;
+	int projectedY = mousePos.y / Constants::TILE_SIZE;
+
+	if (Pieces[projectedX][projectedY] != nullptr) {
+
+		delete Pieces[projectedX][projectedY];
+			
+	}
+
+	Position oldPos = { currentPiece->gridPosition.x, currentPiece->gridPosition.y };
+	
+	Pieces[projectedX][projectedY] = currentPiece;
+	Pieces[oldPos.x][oldPos.y] = nullptr;
+	
+	currentPiece->gridPosition = { projectedX, projectedY };
+
 
 }
 
