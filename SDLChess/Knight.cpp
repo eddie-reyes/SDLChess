@@ -20,6 +20,7 @@ Knight::Knight(SDL_Renderer* renderer, Team team, Position pos) : Piece(renderer
 
 }
 
+
 bool Knight::validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mousePos)
 {
 	int projectedX = mousePos.x / Constants::TILE_SIZE;

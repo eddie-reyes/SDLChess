@@ -7,6 +7,7 @@ struct Color {
 
 };
 
+//represents 2d coordinates or grid position
 struct Position {
 
 	int x;
@@ -15,7 +16,9 @@ struct Position {
 };
 
 enum class Team {
-	//indicates direction of movement
+
+	//value indicates direction of movement
+
 	WHITE_TEAM = -1, //up
 	BLACK_TEAM = 1 //down
 

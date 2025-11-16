@@ -1,5 +1,6 @@
 #pragma once
 
+//global constants
 
 namespace Constants {
 

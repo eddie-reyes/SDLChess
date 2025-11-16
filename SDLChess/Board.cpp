@@ -6,7 +6,6 @@ Board::Board()
 
 	m_Window = SDL_CreateWindow("SDLChess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE, SDL_WINDOW_SHOWN);
 	Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
-	currentPiece = nullptr;
 
 
 	//pawns
@@ -131,6 +130,8 @@ void Board::OnInteractionStarted()
 
 void Board::OnInteractionEnded()
 {
+	//bounds check
+	if (mousePos.x < 0 || mousePos.x > Constants::WINDOW_SIZE || mousePos.y < 0 || mousePos.y > Constants::WINDOW_SIZE) return;
 
 	if (currentPiece == nullptr || currentPiece->getTeam() != m_CurrentTurn) return;
 
@@ -182,7 +183,7 @@ void Board::ShowGameOverScreen()
 	SDL_Rect BG{ 0, 0, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE };
 	SDL_RenderFillRect(Renderer, &BG);
 
-	SDL_Rect winBoundingRect{Constants::WINDOW_SIZE / 2, Constants::WINDOW_SIZE / 2, 408, 64};
+	SDL_Rect winBoundingRect{(Constants::WINDOW_SIZE / 2) - Constants::TILE_SIZE * 2, (Constants::WINDOW_SIZE / 2) - (Constants::TILE_SIZE / 2), Constants::TILE_SIZE * 4, Constants::TILE_SIZE};
 
 	switch (m_CurrentTurn) {
 

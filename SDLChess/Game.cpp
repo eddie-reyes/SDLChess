@@ -8,6 +8,7 @@ void Game::Run()
 
 	isRunning = true;
 
+	//game loop
 	while (isRunning) {
 
 		SDL_Event event;
