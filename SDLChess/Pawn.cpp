@@ -1,7 +1,5 @@
 #include "Pawn.h"
 
-
-
 Pawn::Pawn(SDL_Renderer* renderer, Team team, Position pos) : Piece(renderer, team, pos)
 {
 
