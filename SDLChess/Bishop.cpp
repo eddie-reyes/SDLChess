@@ -24,10 +24,9 @@ bool Bishop::validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& m
 	int projectedX = mousePos.x / Constants::TILE_SIZE;
 	int projectedY = mousePos.y / Constants::TILE_SIZE;
 
-	Position relativePos{ projectedX - gridPosition.x, projectedY - gridPosition.y };
+	Position relativePos = getRelativePosition(projectedX, projectedY);
 
-	if (pieces[projectedX][projectedY] != nullptr && pieces[projectedX][projectedY]->getTeam() == m_Team) return false; //prevent self-attacks
-
+	if (isTargetSameTeam(projectedX, projectedY, pieces)) return false; //prevent self-attacks
 
 	if (abs(relativePos.x) == abs(relativePos.y)) { //check if move is diagonal
 

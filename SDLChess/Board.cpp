@@ -7,13 +7,13 @@ Board::Board()
 	m_Window = SDL_CreateWindow("SDLChess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE, SDL_WINDOW_SHOWN);
 	Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
 	currentPiece = nullptr;
-	
+
 
 	//pawns
 	for (int i = 0; i < 8; i++) {
 
-		Pieces[i][1] = new Pawn(Renderer, Team::BLACK_TEAM, {i, 1});
-		Pieces[i][6] = new Pawn(Renderer, Team::WHITE_TEAM, {i, 6});
+		Pieces[i][1] = new Pawn(Renderer, Team::BLACK_TEAM, { i, 1 });
+		Pieces[i][6] = new Pawn(Renderer, Team::WHITE_TEAM, { i, 6 });
 
 	}
 
@@ -29,6 +29,22 @@ Board::Board()
 	Pieces[2][7] = new Bishop(Renderer, Team::WHITE_TEAM, { 2, 7 });
 	Pieces[5][7] = new Bishop(Renderer, Team::WHITE_TEAM, { 5, 7 });
 
+	//rooks
+	Pieces[0][0] = new Rook(Renderer, Team::BLACK_TEAM, { 0, 0 });
+	Pieces[7][0] = new Rook(Renderer, Team::BLACK_TEAM, { 7, 0 });
+	Pieces[0][7] = new Rook(Renderer, Team::WHITE_TEAM, { 0, 7 });
+	Pieces[7][7] = new Rook(Renderer, Team::WHITE_TEAM, { 7, 7 });
+
+	//kings
+	Pieces[4][0] = new King(Renderer, Team::BLACK_TEAM, { 4, 0 });
+	Pieces[4][7] = new King(Renderer, Team::WHITE_TEAM, { 4, 7 });
+
+	//queens
+	Pieces[3][0] = new Queen(Renderer, Team::BLACK_TEAM, { 3,0 });
+	Pieces[3][7] = new Queen(Renderer, Team::WHITE_TEAM, { 3,7 });
+
+	m_WhiteWin = SDL_CreateTextureFromSurface(Renderer, SDL_LoadBMP("assets/white-wins.bmp"));
+	m_BlackWin = SDL_CreateTextureFromSurface(Renderer, SDL_LoadBMP("assets/black-wins.bmp"));
 	
 };
 
@@ -41,7 +57,7 @@ Board::~Board() {
 
 void Board::Draw()
 {
-	
+
 	SDL_SetRenderDrawColor(Renderer, BG_Color.r, BG_Color.g, BG_Color.b, SDL_ALPHA_OPAQUE); //background color
 
 	SDL_RenderClear(Renderer);
@@ -73,6 +89,7 @@ void Board::Draw()
 		}
 	}
 
+
 	//render interacted piece
 	if (currentPiece) {
 
@@ -80,7 +97,8 @@ void Board::Draw()
 		SDL_RenderCopy(Renderer, currentPiece->getTexture(), NULL, &transformInfo);
 
 	}
-
+	
+	if (gameOver) ShowGameOverScreen();
 
 	SDL_RenderPresent(Renderer);
 	
@@ -94,6 +112,8 @@ void Board::updateMousePosition()
 
 void Board::OnInteractionStarted()
 {
+
+	if (gameOver) return;
 
 	int projectedX = mousePos.x / Constants::TILE_SIZE;
 	int projectedY = mousePos.y / Constants::TILE_SIZE;
@@ -112,9 +132,8 @@ void Board::OnInteractionStarted()
 void Board::OnInteractionEnded()
 {
 
-	if (currentPiece == nullptr || currentPiece->getTeam() == m_CurrentTurn) return;
+	if (currentPiece == nullptr || currentPiece->getTeam() != m_CurrentTurn) return;
 
-	std::cout << (currentPiece->validMove(Pieces, mousePos)) << std::endl;
 	if (currentPiece->validMove(Pieces, mousePos)) {
 
 		EvaluateMove();
@@ -131,6 +150,12 @@ void Board::EvaluateMove()
 
 	if (Pieces[projectedX][projectedY] != nullptr) {
 
+		if (typeid(*Pieces[projectedX][projectedY]) == typeid(King)) {
+			
+			gameOver = true;
+			
+		}
+
 		delete Pieces[projectedX][projectedY];
 			
 	}
@@ -142,8 +167,36 @@ void Board::EvaluateMove()
 	
 	currentPiece->gridPosition = { projectedX, projectedY };
 
+	if (gameOver) return;
+
 	m_CurrentTurn = (m_CurrentTurn == Team::WHITE_TEAM ? Team::BLACK_TEAM : Team::WHITE_TEAM);
 
+
+}
+
+void Board::ShowGameOverScreen()
+{
+
+	SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, SDL_ALPHA_OPAQUE / 1.5); //background color
+	SDL_Rect BG{ 0, 0, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE };
+	SDL_RenderFillRect(Renderer, &BG);
+
+	SDL_Rect winBoundingRect{Constants::WINDOW_SIZE / 2, Constants::WINDOW_SIZE / 2, 408, 64};
+
+	switch (m_CurrentTurn) {
+
+	case Team::BLACK_TEAM:
+		SDL_RenderCopy(Renderer, m_BlackWin, NULL, &winBoundingRect);
+		break;
+
+	case Team::WHITE_TEAM:
+		SDL_RenderCopy(Renderer, m_WhiteWin, NULL, &winBoundingRect);
+		break;
+
+	default:
+		break;
+	}
 
 }
 

@@ -25,17 +25,17 @@ bool Pawn::validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mou
 	int projectedX = mousePos.x / Constants::TILE_SIZE;
 	int projectedY = mousePos.y / Constants::TILE_SIZE;
 	
-	Position relativePos{ projectedX - gridPosition.x, projectedY - gridPosition.y};
+	Position relativePos = getRelativePosition(projectedX, projectedY);
+
+	if (isTargetSameTeam(projectedX, projectedY, pieces)) return false; //prevent self-attacks
+
+	if (pieces[gridPosition.x][projectedY] != nullptr && relativePos.x == 0) return false; //prevent straight-on attacks
 
 	for (Position& validPos : possibleMoves) {
 
 		if (relativePos.x == validPos.x && (relativePos.y * static_cast<int>(m_Team)) == validPos.y) { 
-
-			if (pieces[gridPosition.x][projectedY] != nullptr && relativePos.x == 0) break; //prevent straight-on attacks
-
-			if (pieces[projectedX][projectedY] != nullptr && pieces[projectedX][projectedY]->getTeam() == m_Team) break; //prevent self-attacks
 	
-			if (validPos.y == 2) possibleMoves.pop_back(); //first move flag
+			if (validPos.y == 2) possibleMoves.pop_back(); //remove 2-space move after first use
 
 			return true;
 		}

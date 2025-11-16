@@ -18,6 +18,10 @@ public:
 
 	virtual bool validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& mousePos) = 0;
 
+	Position getRelativePosition(int x, int y);
+
+	bool isTargetSameTeam(int targetX, int targetY, std::array<std::array<Piece*, 8>, 8>& pieces);
+
 	Position gridPosition;
 
 protected:

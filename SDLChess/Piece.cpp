@@ -21,3 +21,16 @@ Team Piece::getTeam() const
 	return m_Team;
 }
 
+Position Piece::getRelativePosition(int x, int y)
+{
+
+	return { x - gridPosition.x, y - gridPosition.y };
+
+}
+
+bool Piece::isTargetSameTeam(int targetX, int targetY, std::array<std::array<Piece*, 8>, 8>& pieces)
+{
+	return (pieces[targetX][targetY] != nullptr && pieces[targetX][targetY]->getTeam() == m_Team); //prevent self-attacks
+
+}
+

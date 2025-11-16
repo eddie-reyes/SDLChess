@@ -25,13 +25,13 @@ bool Knight::validMove(std::array<std::array<Piece*, 8>, 8>& pieces, Position& m
 	int projectedX = mousePos.x / Constants::TILE_SIZE;
 	int projectedY = mousePos.y / Constants::TILE_SIZE;
 
-	Position relativePos{ projectedX - gridPosition.x, projectedY - gridPosition.y };
+	Position relativePos = getRelativePosition(projectedX, projectedY);
+
+	if (isTargetSameTeam(projectedX, projectedY, pieces)) return false; //prevent self-attacks
 
 	for (Position& validPos : possibleMoves) {
 
 		if (relativePos.x == validPos.x && relativePos.y == validPos.y) {
-
-			if (pieces[projectedX][projectedY] != nullptr && pieces[projectedX][projectedY]->getTeam() == m_Team) break; //prevent self-attacks
 
 			return true;
 

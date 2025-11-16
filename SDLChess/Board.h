@@ -4,6 +4,9 @@
 #include "Pawn.h"
 #include "Knight.h"
 #include "Bishop.h"
+#include "Rook.h"
+#include "King.h"
+#include "Queen.h"
 #include "types.h"
 #include "constants.h"
 
@@ -24,6 +27,8 @@ public:
 
 	void EvaluateMove();
 
+	void ShowGameOverScreen();
+
 	Board();
 	
 	~Board();
@@ -40,10 +45,16 @@ public:
 
 private:
 
-	Team m_CurrentTurn = Team::BLACK_TEAM;
+	Team m_CurrentTurn = Team::WHITE_TEAM;
 
 	// Create our window
 	SDL_Window* m_Window;
+
+	SDL_Texture* m_BlackWin;
+
+	SDL_Texture* m_WhiteWin;
+
+	bool gameOver = false;
 
 
 };
