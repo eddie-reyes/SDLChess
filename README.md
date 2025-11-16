@@ -12,7 +12,7 @@ The project compiles using the **MSVC** toolchain in **Visual Studio 2022**
 - Legal move validation for all pieces
 - Turn management (white/black)
 
-### 🎨 Graphics (SDL2)
+### 🎨 Graphics
 - 2D graphics rendering using SDL2
 - Chessboard + piece sprites (.bmp)
 - Texture loading and cleanup
