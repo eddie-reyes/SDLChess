@@ -1,6 +1,8 @@
 
 #include <SDL.h>
 #include <array>
+#include <typeinfo>
+#include <iostream>
 #include "Pawn.h"
 #include "Knight.h"
 #include "Bishop.h"

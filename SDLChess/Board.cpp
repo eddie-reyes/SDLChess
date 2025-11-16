@@ -1,11 +1,12 @@
 #include "Board.h"
-#include <typeinfo>
 
 Board::Board()
 {
 
 	m_Window = SDL_CreateWindow("SDLChess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Constants::WINDOW_SIZE, Constants::WINDOW_SIZE, SDL_WINDOW_SHOWN);
+	std::cout << "[INFO] Window initialized" << std::endl;
 	Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
+	std::cout << "[INFO] Renderer initialized" << std::endl;
 
 
 	//pawns
@@ -45,6 +46,8 @@ Board::Board()
 	m_WhiteWin = SDL_CreateTextureFromSurface(Renderer, SDL_LoadBMP("assets/white-wins.bmp"));
 	m_BlackWin = SDL_CreateTextureFromSurface(Renderer, SDL_LoadBMP("assets/black-wins.bmp"));
 	
+	std::cout << "[INFO] Game Started -- White plays first" << std::endl;
+	std::cout << "press Q to quit" << std::endl << std::endl;
 };
 
 Board::~Board() {
@@ -154,6 +157,7 @@ void Board::EvaluateMove()
 		if (typeid(*Pieces[projectedX][projectedY]) == typeid(King)) {
 			
 			gameOver = true;
+			std::cout << "[INFO] Game Over";
 			
 		}
 
