@@ -40,11 +40,15 @@ void Game::ProcessEvent(SDL_Event& event, Board& board) {
 		board.currentPiece = nullptr;
 
 	}
+	
+	else if (event.type == SDL_KEYDOWN) {
 
-	//else if (event.key.keysym.sym == SDLK_q) { //quit game
+		if (event.key.keysym.sym == SDLK_q) { //quit game
 
-	//	isRunning = false;
+			isRunning = false;
 
-	//}
+		}
+
+	}
 }
 
