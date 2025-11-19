@@ -28,4 +28,4 @@ The project compiles using the **MSVC** toolchain in **Visual Studio 2022**
 
 ---
 
-![alt text](https://github.com/eddie-reyes/SDLChess/blob/master/SDLChess/assets/preview.png "Preview Image)
+![alt text](https://github.com/eddie-reyes/SDLChess/blob/master/SDLChess/assets/preview.png "Preview Image")
