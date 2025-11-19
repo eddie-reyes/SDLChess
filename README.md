@@ -27,5 +27,5 @@ The project compiles using the **MSVC** toolchain in **Visual Studio 2022**
   - `SDL2.dll` (runtime)
 
 ---
-
+# Preview
 ![alt text](https://github.com/eddie-reyes/SDLChess/blob/master/SDLChess/assets/preview.png "Preview Image")
